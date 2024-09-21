@@ -1,6 +1,8 @@
 class Calculadora {
     constructor() {
         this.resultado = "";
+        this.historico = []; 
+        this.contadorOperacoes = 0; 
     }
 
     inserir = (num) => {
@@ -14,13 +16,16 @@ class Calculadora {
     }
 
     voltar = () => {
-        this.resultado = this.resultado.slice(0, -1);
+        this.resultado = this.resultado ? this.resultado.slice(0, -1) : "0"; 
         this.atualizarDisplay();
     }
 
     calcular = () => {
         try {
-            this.resultado = eval(this.resultado); 
+            let valorAnterior = this.resultado;
+            this.resultado = eval(this.resultado);
+            this.historico.push({ valorAnterior, resultado: this.resultado }); 
+            this.contadorOperacoes++;
             this.atualizarDisplay();
         } catch (error) {
             this.resultado = "Erro";
@@ -30,7 +35,7 @@ class Calculadora {
 
     atualizarDisplay = () => {
         const display = document.getElementById('resultado');
-        display.innerHTML = this.resultado || "0"; 
+        display.innerHTML = `${this.resultado || "0"}`; 
     }
 }
 
